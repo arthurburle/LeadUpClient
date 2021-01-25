@@ -14,6 +14,10 @@
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		96905EF65AED1B983A6B3ABC /* libPods-LeadUpClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-LeadUpClient.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		5260742FC2794F4A9E4810AD /* Calibri-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 793530A470BF462BB0DFA0F6 /* Calibri-Bold.ttf */; };
+		D613BDA7DE424A1A93EDDB61 /* Calibri-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DF821E546F344B3B3A1BAB0 /* Calibri-Regular.ttf */; };
+		CB9741B72C76448781623C34 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 710C40D3D43A406BB4E0E6EC /* Montserrat-SemiBold.ttf */; };
+		161993059BE144F894B2AD51 /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DD436EAAA5542878C2A4B02 /* Nunito-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		793530A470BF462BB0DFA0F6 /* Calibri-Bold.ttf */ = {isa = PBXFileReference; name = "Calibri-Bold.ttf"; path = "../assets/fonts/Calibri-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4DF821E546F344B3B3A1BAB0 /* Calibri-Regular.ttf */ = {isa = PBXFileReference; name = "Calibri-Regular.ttf"; path = "../assets/fonts/Calibri-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		710C40D3D43A406BB4E0E6EC /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2DD436EAAA5542878C2A4B02 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
+				112925D7223B4188B2A7952E /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -118,6 +127,18 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		112925D7223B4188B2A7952E /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				793530A470BF462BB0DFA0F6 /* Calibri-Bold.ttf */,
+				4DF821E546F344B3B3A1BAB0 /* Calibri-Regular.ttf */,
+				710C40D3D43A406BB4E0E6EC /* Montserrat-SemiBold.ttf */,
+				2DD436EAAA5542878C2A4B02 /* Nunito-Regular.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -183,6 +204,10 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
+				5260742FC2794F4A9E4810AD /* Calibri-Bold.ttf in Resources */,
+				D613BDA7DE424A1A93EDDB61 /* Calibri-Regular.ttf in Resources */,
+				CB9741B72C76448781623C34 /* Montserrat-SemiBold.ttf in Resources */,
+				161993059BE144F894B2AD51 /* Nunito-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

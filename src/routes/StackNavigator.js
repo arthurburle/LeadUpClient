@@ -1,32 +1,31 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import * as actions from '../actions';
-import Login from '../screens/Login';
+import { navigationRef } from './RootNavigation';
 
-class StackNavigatior extends Component {
-  componentDidMount() {}
+import ResolveAuthScreen from '../screens/ResolveAuthScreen';
+import CardCreateScreen from '../screens/CardCreateScreen';
+import CardDetailScreen from '../screens/CardDetailScreen';
+import CardListScreen from '../screens/CardListScreen';
+import SigninScreen from '../screens/SigninScreen';
+import SignupScreen from '../screens/SignupScreen';
 
-  onPressHandler = () => {
-    this.props.test(this.props.auth.test === 'oi' ? 'tchau' : 'oi');
-  };
+const Stack = createStackNavigator();
 
-  render() {
-    console.log(this.props.auth.test);
-    return (
-      <View>
-        <TouchableOpacity onPress={this.onPressHandler}>
-          <Text>Gravar state</Text>
-        </TouchableOpacity>
-        <Login />
-      </View>
-    );
-  }
+function MyStack() {
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name="ResolveAuth" component={ResolveAuthScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="Signin" component={SigninScreen} />
+        <Stack.Screen name="CardList" component={CardListScreen} />
+        <Stack.Screen name="CardCreate" component={CardCreateScreen} />
+        <Stack.Screen name="CardDetail" component={CardDetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
-
-export default connect(mapStateToProps, actions)(StackNavigatior);
+export default MyStack;

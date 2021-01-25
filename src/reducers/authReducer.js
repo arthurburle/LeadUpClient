@@ -1,11 +1,25 @@
-import { FETCH_USER, TEST } from '../actions/types';
+import {
+  ADD_ERROR,
+  SIGN_IN,
+  SIGN_OUT,
+  CLEAR_ERROR_MESSAGE,
+} from '../actions/types';
 
-export default function authReducer(state = null, action) {
+const INITIAL_STATE = {
+  token: null,
+  errorMessage: '',
+};
+
+export default function authReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case TEST:
-      return { test: action.payload };
-    case FETCH_USER:
-      return action.payload || false;
+    case ADD_ERROR:
+      return { ...state, errorMessage: action.payload };
+    case CLEAR_ERROR_MESSAGE:
+      return { ...state, errorMessage: '' };
+    case SIGN_IN:
+      return { errorMessage: '', token: action.payload };
+    case SIGN_OUT:
+      return { token: null, errorMessage: '' };
     default:
       return state;
   }
