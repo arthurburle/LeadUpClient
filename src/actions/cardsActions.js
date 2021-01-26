@@ -6,12 +6,12 @@ export const fetchCards = () => async dispatch => {
   dispatch({ type: FETCH_CARDS, payload: response.data });
 };
 
-export const createCard = (title, description) => async () => {
-  await leadUpApi.post('/cards', { title, description });
+export const createCard = (title, description, photoUri) => async () => {
+  await leadUpApi.post('/cards', { title, description, photoUri });
 };
 
-export const editCard = (title, description, _id) => async () => {
-  await leadUpApi.put(`/cards/${_id}`, { title, description });
+export const editCard = (title, description, photoUri, _id) => async () => {
+  await leadUpApi.put(`/cards/${_id}`, { title, description, photoUri });
 };
 
 export const deleteCard = _id => async () => {

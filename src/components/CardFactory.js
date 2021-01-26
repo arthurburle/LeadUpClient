@@ -8,29 +8,59 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 import DoneModal from './DoneModal';
 
 import UploadButton from '../assets/img/UploadButton.png';
 import SaveButton from '../assets/img/SaveButton.png';
+import NoImage from '../assets/img/NoImage.png';
 
 const CardFactory = ({ card, callback }) => {
   const [title, setTitle] = useState(card ? card.title : '');
   const [description, setDescription] = useState(card ? card.description : '');
+  const [photoUri, setPhotoUri] = useState(card ? card.photoUri : '');
   const [modalVisibility, setModalVisibility] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Precisamos do acesso ás imagens para que funcione');
+        }
+      }
+    })();
+  }, []);
+  console.log(photoUri);
 
   useEffect(() => {
     const listener = navigation.addListener('blur', () => setErrorMessage(''));
     return listener;
   });
 
+  const handleChoosePhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setPhotoUri(result.uri);
+    }
+  };
+
   const onSaveHandler = async () => {
     try {
-      await callback(title, description, card ? card._id : null);
+      await callback(title, description, photoUri, card ? card._id : null);
       setModalVisibility(true);
       setTimeout(function () {
         setModalVisibility(false);
@@ -44,10 +74,20 @@ const CardFactory = ({ card, callback }) => {
   return (
     <>
       <ScrollView>
-        <View style={styles.image} />
-        <View style={styles.uploadButtonContainer}>
+        {photoUri ? (
+          <Image source={{ uri: photoUri }} style={styles.image} />
+        ) : (
+          <View style={styles.image}>
+            <Image source={NoImage} />
+          </View>
+        )}
+
+        <TouchableOpacity
+          onPress={handleChoosePhoto}
+          style={styles.uploadButtonContainer}
+        >
           <Image source={UploadButton} style={styles.uploadButton} />
-        </View>
+        </TouchableOpacity>
         <View style={styles.formContainer}>
           <Text style={styles.inputLabel}>Título</Text>
           <TextInput
@@ -92,8 +132,10 @@ const PW = SW / 375;
 const styles = StyleSheet.create({
   image: {
     width: SW,
-    height: 234 * PW,
-    backgroundColor: '#DDD',
+    height: SW * (3 / 4),
+    backgroundColor: '#F4F4F4',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   uploadButtonContainer: {
     alignItems: 'flex-end',

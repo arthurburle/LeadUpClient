@@ -79,7 +79,8 @@ const CardListScreen = ({ navigation, cardsList, fetchCards }) => {
                 navigation.navigate('CardDetail', { _id: item._id })
               }
             >
-              <View style={styles.itemImage} />
+              <Image source={{ uri: item.photoUri }} style={styles.itemImage} />
+
               <Text style={styles.itemTitle}>
                 {item.title.length > 32
                   ? `${item.title.slice(0, 30)}...`
@@ -131,9 +132,8 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     alignSelf: 'center',
-    height: 288 * PW,
     width: 288 * PW,
-    backgroundColor: '#DDD',
+    height: 288 * PW * (3 / 4),
   },
   itemTitle: {
     fontSize: 18 * PW,

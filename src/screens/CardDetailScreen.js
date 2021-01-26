@@ -46,7 +46,7 @@ const CardDetailScreen = ({ navigation, card, deleteCard }) => {
     <View style={styles.container}>
       <Header />
       <ScrollView>
-        <View style={styles.itemImage} />
+        <Image source={{ uri: card.photoUri }} style={styles.itemImage} />
         <View style={styles.infoContainer}>
           <Text style={styles.itemTitle}>{card.title}</Text>
           <Text style={styles.itemDescription}>{card.description}</Text>
@@ -91,8 +91,7 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     width: SW,
-    height: 298 * PW,
-    backgroundColor: '#DDD',
+    height: SW * (3 / 4),
   },
   infoContainer: {
     paddingHorizontal: 41 * PW,
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
     height: 41.05 * PW,
-    width: 289 * PW,
+    width: 287 * PW,
     marginTop: 24 * PH,
     marginBottom: 5 * PH,
   },

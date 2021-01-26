@@ -8,6 +8,8 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import Logo from '../assets/img/Logo.png';
 
 // Proportional Height and Width
@@ -20,6 +22,16 @@ const AuthForm = ({ errorMessage, onSubmit, submitButtonText }) => {
   const [validEmail, setValidEmail] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [showError, setShowError] = useState(false);
+
+  const navigation = useNavigation();
+  useEffect(() => {
+    const listener = navigation.addListener('blur', () => {
+      setEmail('');
+      setPassword('');
+      setShowError(false);
+    });
+    return listener;
+  });
 
   useEffect(() => {
     // Email validation
