@@ -1,33 +1,76 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import { connect } from 'react-redux';
-import { editCard, deleteCard } from '../actions/cardsActions';
+import { deleteCard } from '../actions/cardsActions';
 
 import Header from '../components/Header';
+import EditButton from '../assets/img/EditButton.png';
+import DeleteButton from '../assets/img/DeleteButton.png';
 
-const CardDetailScreen = ({ card, editCard, deleteCard }) => {
+import DeleteModal from '../components/DeleteModal';
+import DoneModal from '../components/DoneModal';
+
+const CardDetailScreen = ({ navigation, card, deleteCard }) => {
+  const [deleteModalVisibility, setDeleteModalVisibility] = useState(false);
+  const [doneModalVisibility, setDoneModalVisibility] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const listener = navigation.addListener('blur', () => setErrorMessage(''));
+    return listener;
+  });
+
+  const handleDelete = async () => {
+    try {
+      setDeleteModalVisibility(false);
+      await deleteCard(card._id);
+      setDoneModalVisibility(true);
+      setTimeout(function () {
+        setDoneModalVisibility(false);
+        navigation.navigate('CardList');
+      }, 1000);
+    } catch (err) {
+      setErrorMessage('Erro. Problema na conexão');
+    }
+  };
+
   return (
-    <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
+    <View style={styles.container}>
       <Header />
-      <Text style={{ fontSize: 48 }}>CardDetailScreen</Text>
-      <Text>{card.title}</Text>
-      <Text>{card.description}</Text>
-      <TouchableOpacity
-        onPress={() =>
-          editCard('blaasdsegwe bla bla', 'blu fwefewfewblu blu', card._id)
-        }
-      >
-        <Text>EDITAR</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          deleteCard(card._id);
-        }}
-      >
-        <Text>DELETAR</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+      <ScrollView>
+        <View style={styles.itemImage} />
+        <View style={styles.infoContainer}>
+          <Text style={styles.itemTitle}>{card.title}</Text>
+          <Text style={styles.itemDescription}>{card.description}</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CardEdit', { card })}
+          >
+            <Image style={styles.button} source={EditButton} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setDeleteModalVisibility(true)}>
+            <Image style={styles.button} source={DeleteButton} />
+          </TouchableOpacity>
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        </View>
+      </ScrollView>
+      <DeleteModal
+        visible={deleteModalVisibility}
+        setVisibility={setDeleteModalVisibility}
+        callback={handleDelete}
+      />
+      <DoneModal
+        visible={doneModalVisibility}
+        text="Artigo excluído com sucesso"
+      />
+    </View>
   );
 };
 
@@ -37,13 +80,46 @@ const mapStateToProps = (state, props) => {
   return { card };
 };
 
+const SW = Dimensions.get('window').width;
+const PH = Dimensions.get('window').height / 812;
+const PW = SW / 375;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
+    backgroundColor: '#FFF',
+  },
+  itemImage: {
+    width: SW,
+    height: 298 * PW,
+    backgroundColor: '#DDD',
+  },
+  infoContainer: {
+    paddingHorizontal: 41 * PW,
+    paddingBottom: 70 * PH,
+  },
+  itemTitle: {
+    fontSize: 18 * PW,
+    fontWeight: 'bold',
+    marginTop: 29 * PH,
+    marginBottom: 12 * PH,
+  },
+  itemDescription: {
+    fontSize: 14 * PW,
+  },
+  button: {
+    alignSelf: 'center',
+    height: 41.05 * PW,
+    width: 289 * PW,
+    marginTop: 24 * PH,
+    marginBottom: 5 * PH,
+  },
+  errorMessage: {
+    fontSize: 13 * PW,
+    color: 'red',
+    marginTop: 30 * PH,
+    marginLeft: 3 * PW,
   },
 });
 
-export default connect(mapStateToProps, { editCard, deleteCard })(
-  CardDetailScreen
-);
+export default connect(mapStateToProps, { deleteCard })(CardDetailScreen);

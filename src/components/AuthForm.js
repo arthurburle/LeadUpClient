@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,36 @@ const PW = Dimensions.get('window').width / 375;
 const AuthForm = ({ errorMessage, onSubmit, submitButtonText }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [validEmail, setValidEmail] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    // Email validation
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(email) === false) {
+      setValidEmail(false);
+    } else {
+      setValidEmail(true);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    // Password validation
+    if (password.length < 6) {
+      setValidPassword(false);
+    } else {
+      setValidPassword(true);
+    }
+  }, [password]);
+
+  handleOnSubmit = () => {
+    if (validEmail && validPassword) {
+      onSubmit({ email, password });
+    } else {
+      setShowError(true);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -24,6 +54,7 @@ const AuthForm = ({ errorMessage, onSubmit, submitButtonText }) => {
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>E-mail</Text>
         <TextInput
+          type="email"
           placeholder="E-mail"
           style={styles.inputField}
           onChangeText={setEmail}
@@ -31,6 +62,9 @@ const AuthForm = ({ errorMessage, onSubmit, submitButtonText }) => {
           autoCapitalize="none"
           autoCorrect={false}
         />
+        {showError && !validEmail ? (
+          <Text style={styles.errorMessage}>Este não é um email válido</Text>
+        ) : null}
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Senha</Text>
@@ -43,12 +77,14 @@ const AuthForm = ({ errorMessage, onSubmit, submitButtonText }) => {
           autoCapitalize="none"
           autoCorrect={false}
         />
+        {showError && !validPassword ? (
+          <Text style={styles.errorMessage}>
+            Sua senha precisa ter pelo menos 6 dígitos
+          </Text>
+        ) : null}
       </View>
       <Text style={styles.errorMessage}>{errorMessage}</Text>
-      <TouchableOpacity
-        onPress={() => onSubmit({ email, password })}
-        style={styles.submitButton}
-      >
+      <TouchableOpacity onPress={handleOnSubmit} style={styles.submitButton}>
         <Text style={styles.submitText}>{submitButtonText}</Text>
       </TouchableOpacity>
     </View>
@@ -80,7 +116,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#00DCB7',
   },
   errorMessage: {
-    fontSize: 16,
+    fontSize: 13,
     color: 'red',
   },
   submitButton: {

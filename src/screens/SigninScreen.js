@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { signin, clearErrorMessage } from '../actions/authActions';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import AuthForm from '../components/AuthForm';
@@ -20,15 +20,17 @@ const SigninScreen = ({
 
   return (
     <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
-      <AuthForm
-        errorMessage={errorMessage}
-        submitButtonText="ENTRAR"
-        onSubmit={signin}
-      />
-      <NavLink
-        text="Ainda não possui uma conta? Registrar"
-        routeName="Signup"
-      />
+      <ScrollView>
+        <AuthForm
+          errorMessage={errorMessage}
+          submitButtonText="ENTRAR"
+          onSubmit={signin}
+        />
+        <NavLink
+          text="Ainda não possui uma conta? Registrar"
+          routeName="Signup"
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -6,6 +6,7 @@ import { navigationRef } from './RootNavigation';
 
 import ResolveAuthScreen from '../screens/ResolveAuthScreen';
 import CardCreateScreen from '../screens/CardCreateScreen';
+import CardEditScreen from '../screens/CardEditScreen';
 import CardDetailScreen from '../screens/CardDetailScreen';
 import CardListScreen from '../screens/CardListScreen';
 import SigninScreen from '../screens/SigninScreen';
@@ -22,6 +23,7 @@ function MyStack() {
         <Stack.Screen name="Signin" component={SigninScreen} />
         <Stack.Screen name="CardList" component={CardListScreen} />
         <Stack.Screen name="CardCreate" component={CardCreateScreen} />
+        <Stack.Screen name="CardEdit" component={CardEditScreen} />
         <Stack.Screen name="CardDetail" component={CardDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>

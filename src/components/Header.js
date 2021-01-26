@@ -8,13 +8,24 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
+import ArrowBack from '../assets/img/ArrowBack.png';
 import Logo from '../assets/img/Logo.png';
 import Logout from '../assets/img/Logout.png';
 
-const Header = ({ signout }) => {
+const Header = ({ signout, listScreen }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      {listScreen ? null : (
+        <TouchableOpacity
+          style={styles.arrowBackContainer}
+          onPress={() => navigation.navigate('CardList')}
+        >
+          <Image style={styles.arrowBack} source={ArrowBack} />
+        </TouchableOpacity>
+      )}
       <Image style={styles.logo} source={Logo} />
       <TouchableOpacity onPress={signout} style={styles.logout}>
         <Image source={Logout} />
@@ -33,10 +44,19 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 40 * PH,
+    paddingTop: 43 * PH,
     marginTop: -10 * PH,
     elevation: 3,
     backgroundColor: '#FFF',
+  },
+  arrowBackContainer: {
+    position: 'absolute',
+    left: 30 * PW,
+    paddingTop: 50 * PH,
+  },
+  arrowBack: {
+    height: 17 * PW,
+    width: 10 * PW,
   },
   logo: {
     height: 40 * PH,
@@ -45,7 +65,7 @@ const styles = StyleSheet.create({
   logout: {
     position: 'absolute',
     right: 30 * PW,
-    paddingTop: 40 * PH,
+    paddingTop: 45 * PH,
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,22 +13,64 @@ import { fetchCards } from '../actions/cardsActions';
 
 import Header from '../components/Header';
 import AddButton from '../assets/img/AddButton.png';
-import Checkmark from '../assets/img/CheckmarkCircle.png';
 import EditButton from '../assets/img/EditButton.png';
 
-const CardListScreen = ({ navigation, fetchCards, cardsList }) => {
+const PH = Dimensions.get('window').height / 812;
+const PW = Dimensions.get('window').width / 375;
+
+const CardListScreen = ({ navigation, cardsList, fetchCards }) => {
+  const [refreshing, setRefreshing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
-    const listener = navigation.addListener('focus', fetchCards);
+    const listener = navigation.addListener('blur', () => setErrorMessage(''));
     return listener;
   });
 
+  useEffect(() => {
+    const listener = navigation.addListener('focus', async () => {
+      setRefreshing(true);
+      try {
+        await fetchCards();
+        setRefreshing(false);
+      } catch (err) {
+        setErrorMessage('Erro. Problema na conexão');
+      }
+    });
+    return listener;
+  });
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchCards();
+    setRefreshing(false);
+  };
+
+  if (cardsList.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Header listScreen />
+        {refreshing ? null : (
+          <Text style={styles.noCardsText}>Ainda não há nenhum registros</Text>
+        )}
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('CardCreate')}
+        >
+          <Image source={AddButton} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
-      <Header />
+      <Header listScreen />
       <FlatList
         data={cardsList}
         keyExtractor={item => item._id}
         contentContainerStyle={styles.flatListContainer}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
@@ -37,11 +79,22 @@ const CardListScreen = ({ navigation, fetchCards, cardsList }) => {
                 navigation.navigate('CardDetail', { _id: item._id })
               }
             >
-              <Image source={Checkmark} style={styles.itemImage} />
-              <Text style={styles.itemTitle}>{item.title}</Text>
-              <Text style={styles.itemDescription}>{item.description}</Text>
-              <TouchableOpacity>
+              <View style={styles.itemImage} />
+              <Text style={styles.itemTitle}>
+                {item.title.length > 32
+                  ? `${item.title.slice(0, 30)}...`
+                  : item.title}
+              </Text>
+              <Text style={styles.itemDescription}>
+                {item.description.length > 178
+                  ? `${item.description.slice(0, 174)}...`
+                  : item.description}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CardEdit', { card: item })}
+              >
                 <Image style={styles.editButton} source={EditButton} />
+                <Text style={styles.errorMessage}>{errorMessage}</Text>
               </TouchableOpacity>
             </TouchableOpacity>
           );
@@ -60,9 +113,6 @@ const CardListScreen = ({ navigation, fetchCards, cardsList }) => {
 const mapStateToProps = state => {
   return { cardsList: state.cards };
 };
-
-const PH = Dimensions.get('window').height / 812;
-const PW = Dimensions.get('window').width / 375;
 
 const styles = StyleSheet.create({
   container: {
@@ -83,6 +133,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 288 * PW,
     width: 288 * PW,
+    backgroundColor: '#DDD',
   },
   itemTitle: {
     fontSize: 18 * PW,
@@ -106,6 +157,22 @@ const styles = StyleSheet.create({
     right: 27 * PW,
     height: 57 * PW,
     width: 57 * PW,
+  },
+  errorMessage: {
+    fontSize: 13 * PW,
+    color: 'red',
+    marginLeft: 5 * PW,
+  },
+  activityIndicator: {
+    color: '#00DCB7',
+    alignSelf: 'center',
+    marginTop: 100 * PH,
+  },
+  noCardsText: {
+    fontSize: 15 * PW,
+    color: '#AAA',
+    alignSelf: 'center',
+    marginTop: 100 * PH,
   },
 });
 
